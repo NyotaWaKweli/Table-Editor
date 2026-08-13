@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+  <title>Table Editor · Professional</title>
+  <style>
+	:root {
+	  --bg: #f6f6f4;
+	  --surface: #ffffff;
+	  --border: #e2e2de;
+	  --text: #1e1e1e;
+	  --text-light: #6e6e6e;
+	  --accent: #2c2c2c;
+	  --accent-text: #ffffff;
+	  --hover: #eeeeea;
+	  --radius: 4px;
+	  --shadow: 0 1px 2px rgba(0,0,0,0.04);
+	  --font-color: #1e1e1e;
+	  --table-bg: #ffffff;
+	  --header-bg: #f8f8f6;
+	  --row-alt: #fafaf8;
+	  --border-strong: #d5d5d0;
+	  --btn-primary-bg: #2c2c2c;
+	  --btn-primary-text: #ffffff;
+	  --btn-secondary-bg: #ffffff;
+	  --btn-secondary-text: #1e1e1e;
+	  --btn-danger-bg: #ffffff;
+	  --btn-danger-text: #4a4a4a;
+	}
+
+	* {
+	  margin: 0;
+	  padding: 0;
+	  box-sizing: border-box;
+	}
+
+	body {
+	  background: var(--bg);
+	  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+	  color: var(--font-color);
+	  display: flex;
+	  justify-content: center;
+	  align-items: flex-start;
+	  min-height: 100vh;
+	  padding: 16px;
+	  line-height: 1.5;
+	  -webkit-font-smoothing: antialiased;
+	  transition: background 0.2s, color 0.2s;
+	}
+
+	.container {
+	  background: var(--surface);
+	  border: 1px solid var(--border);
+	  border-radius: 8px;
+	  width: 100%;
+	  max-width: 1000px;
+	  padding: 20px;
+	  box-shadow: var(--shadow);
+	  transition: background 0.2s, border-color 0.2s;
+	}
+
+	.header {
+	  display: flex;
+	  flex-direction: column;
+	  gap: 16px;
+	  margin-bottom: 20px;
+	}
+
+	.title-row {
+	  display: flex;
+	  justify-content: space-between;
+	  align-items: center;
+	  flex-wrap: wrap;
+	  gap: 12px;
+	}
+
+	h1 {
+	  font-size: 1.3rem;
+	  font-weight: 600;
+	  letter-spacing: -0.01em;
+	  color: var(--font-color);
+	  transition: color 0.2s;
+	}
+
+	.theme-switch {
+	  display: flex;
+	  align-items: center;
+	  gap: 2px;
+	  background: var(--surface);
+	  border: 1px solid var(--border);
+	  border-radius: 20px;
+	  padding: 3px;
+	  transition: background 0.2s, border-color 0.2s;
+	}
+
+	.theme-btn {
+	  border: none;
+	  background: transparent;
+	  padding: 6px 14px;
+	  font-size: 0.78rem;
+	  cursor: pointer;
+	  border-radius: 16px;
+	  color: var(--text-light);
+	  font-weight: 500;
+	  transition: all 0.2s;
+	}
+
+	.theme-btn.active {
+	  background: var(--accent);
+	  color: var(--accent-text);
+	}
+
+	.toolbar-section {
+	  display: flex;
+	  flex-direction: column;
+	  gap: 10px;
+	}
+
+	.toolbar-group {
+	  display: flex;
+	  flex-wrap: wrap;
+	  gap: 8px;
+	  align-items: center;
+	}
+
+	.toolbar-group-label {
+	  font-size: 0.7rem;
+	  font-weight: 600;
+	  text-transform: uppercase;
+	  letter-spacing: 0.05em;
+	  color: var(--text-light);
+	  margin-right: 4px;
+	  min-width: 60px;
+	  transition: color 0.2s;
+	}
+
+	.btn {
+	  background: var(--btn-secondary-bg);
+	  border: 1px solid var(--border);
+	  border-radius: var(--radius);
+	  padding: 8px 14px;
+	  font-size: 0.82rem;
+	  font-weight: 500;
+	  color: var(--btn-secondary-text);
+	  cursor: pointer;
+	  transition: all 0.15s;
+	  white-space: nowrap;
+	  letter-spacing: 0.01em;
+	  min-height: 36px;
+	  display: inline-flex;
+	  align-items: center;
+	  justify-content: center;
+	  gap: 6px;
+	}
+
+	.btn:hover {
+	  background: var(--hover);
+	  border-color: var(--border-strong);
+	}
+
+	.btn.primary {
+	  background: var(--btn-primary-bg);
+	  border-color: var(--btn-primary-bg);
+	  color: var(--btn-primary-text);
+	}
+
+	.btn.primary:hover {
+	  background: var(--accent);
+	  border-color: var(--accent);
+	  filter: brightness(0.9);
+	}
+
+	.btn.danger {
+	  background: var(--btn-danger-bg);
+	  border-color: var(--border);
+	  color: var(--btn-danger-text);
+	}
+
+	.btn.danger:hover {
+	  background: var(--hover);
+	  border-color: #b0b0ac;
+	}
+
+	.btn.secondary {
+	  background: var(--btn-secondary-bg);
+	  border-color: var(--border-strong);
+	  color: var(--btn-secondary-text);
+	}
+
+	.btn.secondary:hover {
+	  background: var(--hover);
+	}
+
+	.control-group {
+	  display: flex;
+	  align-items: center;
+	  gap: 6px;
+	  flex-wrap: wrap;
+	}
+
+	.color-picker {
+	  display: flex;
+	  align-items: center;
+	  gap: 6px;
+	  font-size: 0.78rem;
+	  color: var(--text-light);
+	  background: var(--surface);
+	  border: 1px solid var(--border);
+	  border-radius: var(--radius);
+	  padding: 4px 10px;
+	  min-height: 36px;
+	  transition: background 0.2s, border-color 0.2s;
+	}
+
+	.color-picker span {
+	  font-weight: 500;
+	  transition: color 0.2s;
+	}
+
+	input[type="color"] {
+	  width: 26px;
+	  height: 26px;
+	  border: 1px solid var(--border);
+	  border-radius: 3px;
+	  background: white;
+	  cursor: pointer;
+	  padding: 1px;
+	}
+
+	.table-wrapper {
+	  overflow-x: auto;
+	  margin-top: 8px;
+	  border-radius: var(--radius);
+	  background: var(--table-bg);
+	  border: 1px solid var(--border);
+	  -webkit-overflow-scrolling: touch;
+	  transition: background 0.2s, border-color 0.2s;
+	}
+
+	table {
+	  width: 100%;
+	  border-collapse: collapse;
+	  min-width: 500px;
+	  font-size: 0.88rem;
+	  color: var(--font-color);
+	  transition: color 0.2s;
+	}
+
+	th, td {
+	  padding: 10px 12px;
+	  text-align: left;
+	  border-bottom: 1px solid var(--border);
+	  vertical-align: middle;
+	  white-space: nowrap;
+	  transition: border-color 0.2s;
+	}
+
+	th {
+	  font-weight: 600;
+	  background: var(--header-bg);
+	  border-bottom: 1px solid var(--border-strong);
+	  font-size: 0.82rem;
+	  letter-spacing: 0.02em;
+	  color: var(--font-color);
+	  transition: background 0.2s, border-color 0.2s, color 0.2s;
+	}
+
+	td {
+	  background: var(--table-bg);
+	  transition: background 0.2s, color 0.2s;
+	}
+
+	th[contenteditable="true"],
+	td[contenteditable="true"] {
+	  cursor: text;
+	  transition: background 0.15s, box-shadow 0.15s, color 0.2s;
+	}
+
+	th[contenteditable="true"]:hover,
+	td[contenteditable="true"]:hover {
+	  background: var(--hover);
+	}
+
+	th[contenteditable="true"]:focus,
+	td[contenteditable="true"]:focus {
+	  outline: none;
+	  background: var(--hover);
+	  box-shadow: inset 0 0 0 1px var(--border-strong);
+	}
+
+	.row-index, .corner-cell {
+	  background: var(--header-bg);
+	  color: var(--text-light);
+	  font-weight: 500;
+	  font-size: 0.75rem;
+	  text-align: center;
+	  width: 40px;
+	  user-select: none;
+	  border-right: 1px solid var(--border);
+	  transition: background 0.2s, color 0.2s, border-color 0.2s;
+	}
+
+	.empty-message {
+	  padding: 32px 16px;
+	  text-align: center;
+	  color: var(--text-light);
+	  font-size: 0.85rem;
+	  letter-spacing: 0.02em;
+	  background: var(--table-bg);
+	  border: 1px dashed var(--border);
+	  border-radius: var(--radius);
+	  transition: background 0.2s, color 0.2s, border-color 0.2s;
+	}
+
+	.footer-note {
+	  margin-top: 14px;
+	  display: flex;
+	  flex-wrap: wrap;
+	  gap: 16px;
+	  font-size: 0.72rem;
+	  color: var(--text-light);
+	  letter-spacing: 0.02em;
+	  transition: color 0.2s;
+	}
+
+	.footer-note span {
+	  display: flex;
+	  align-items: center;
+	}
+
+	/* Overlay */
+	.overlay {
+	  position: fixed;
+	  top: 0;
+	  left: 0;
+	  width: 100%;
+	  height: 100%;
+	  background: rgba(0, 0, 0, 0.5);
+	  backdrop-filter: blur(3px);
+	  display: flex;
+	  justify-content: center;
+	  align-items: center;
+	  z-index: 1000;
+	  padding: 20px;
+	  opacity: 0;
+	  pointer-events: none;
+	  transition: opacity 0.2s;
+	}
+
+	.overlay.active {
+	  opacity: 1;
+	  pointer-events: auto;
+	}
+
+	.overlay-content {
+	  background: var(--surface);
+	  border-radius: 8px;
+	  width: 100%;
+	  max-width: 1100px;
+	  max-height: 90vh;
+	  overflow: auto;
+	  padding: 20px;
+	  box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+	  position: relative;
+	  transition: background 0.2s;
+	}
+
+	.overlay-header {
+	  display: flex;
+	  justify-content: space-between;
+	  align-items: center;
+	  margin-bottom: 14px;
+	}
+
+	.overlay-header h2 {
+	  font-weight: 600;
+	  font-size: 1rem;
+	  color: var(--font-color);
+	  transition: color 0.2s;
+	}
+
+	.overlay-close {
+	  background: none;
+	  border: 1px solid var(--border);
+	  border-radius: 50%;
+	  width: 32px;
+	  height: 32px;
+	  cursor: pointer;
+	  font-size: 1rem;
+	  color: var(--text-light);
+	  transition: all 0.15s;
+	  display: flex;
+	  align-items: center;
+	  justify-content: center;
+	}
+
+	.overlay-close:hover {
+	  background: var(--hover);
+	  color: var(--font-color);
+	}
+
+	.overlay-table-wrapper {
+	  overflow-x: auto;
+	  border-radius: 4px;
+	  background: var(--table-bg);
+	  border: 1px solid var(--border);
+	  transition: background 0.2s, border-color 0.2s;
+	}
+
+	.overlay table {
+	  min-width: 600px;
+	  font-size: 0.85rem;
+	}
+
+	.save-screenshot-btn {
+	  margin-top: 14px;
+	  background: var(--btn-primary-bg);
+	  color: var(--btn-primary-text);
+	  border: none;
+	  padding: 8px 18px;
+	  border-radius: var(--radius);
+	  font-weight: 500;
+	  cursor: pointer;
+	  font-size: 0.85rem;
+	  display: inline-flex;
+	  align-items: center;
+	  gap: 6px;
+	  transition: background 0.15s;
+	}
+
+	.save-screenshot-btn:hover {
+	  filter: brightness(0.9);
+	}
+
+	/* Mobile first */
+	@media (max-width: 600px) {
+	  body {
+		padding: 8px;
+	  }
+	  .container {
+		padding: 14px;
+		border-radius: 6px;
+	  }
+	  .header {
+		gap: 12px;
+	  }
+	  .btn {
+		padding: 8px 10px;
+		font-size: 0.75rem;
+		min-height: 32px;
+	  }
+	  .color-picker {
+		font-size: 0.72rem;
+		padding: 3px 8px;
+		min-height: 32px;
+	  }
+	  th, td {
+		padding: 7px 8px;
+		font-size: 0.78rem;
+	  }
+	  .row-index, .corner-cell {
+		width: 30px;
+		font-size: 0.7rem;
+	  }
+	}
+  </style>
+</head>
+<body>
+  <div class="container" id="mainContainer">
+	<div class="header">
+	  <div class="title-row">
+		<h1>Table Editor</h1>
+		<div class="theme-switch" id="themeSwitch">
+		  <button class="theme-btn active" data-theme="light">Light</button>
+		  <button class="theme-btn" data-theme="dark">Dark</button>
+		</div>
+	  </div>
+
+	  <div class="toolbar-section">
+		<div class="toolbar-group">
+		  <span class="toolbar-group-label">Structure</span>
+		  <button class="btn primary" id="addRowBtn">Add Row</button>
+		  <button class="btn primary" id="addColumnBtn">Add Column</button>
+		  <button class="btn danger" id="deleteRowBtn">Remove Row</button>
+		  <button class="btn danger" id="deleteColumnBtn">Remove Column</button>
+		</div>
+		<div class="toolbar-group">
+		  <span class="toolbar-group-label">Preview</span>
+		  <button class="btn secondary" id="openOverlayBtn">Overlay View</button>
+		  <button class="btn secondary" id="resetTableBtn">Reset Table</button>
+		</div>
+		<div class="toolbar-group">
+		  <span class="toolbar-group-label">Appearance</span>
+		  <div class="color-picker">
+			<span>Table BG</span>
+			<input type="color" id="tableBgColor" value="#ffffff">
+		  </div>
+		  <div class="color-picker">
+			<span>Font</span>
+			<input type="color" id="fontColorInput" value="#1e1e1e">
+		  </div>
+		</div>
+	  </div>
+	</div>
+
+	<div class="table-wrapper" id="tableWrapper">
+	  <table id="editableTable">
+		<thead id="tableHead"></thead>
+		<tbody id="tableBody"></tbody>
+	  </table>
+	  <div id="emptyMessage" class="empty-message">No rows or columns. Use the toolbar to add structure.</div>
+	</div>
+
+	<div class="footer-note">
+	  <span>Click any cell to edit</span>
+	  <span>Data saves automatically</span>
+	  <span>Overlay for clean screenshot</span>
+	</div>
+  </div>
+
+  <!-- Overlay -->
+  <div class="overlay" id="screenshotOverlay">
+	<div class="overlay-content">
+	  <div class="overlay-header">
+		<h2>Table Preview</h2>
+		<button class="overlay-close" id="closeOverlayBtn">&#10005;</button>
+	  </div>
+	  <div class="overlay-table-wrapper" id="overlayTableWrapper"></div>
+	  <div style="display: flex; justify-content: flex-end;">
+		<button class="save-screenshot-btn" id="saveScreenshotBtn">Save as Image</button>
+	  </div>
+	</div>
+  </div>
+
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js">
+  </script>
+  <script>
+	(function() {
+	  // ----- DEFAULT STATE -----
+	  const defaultData = {
+		headers: ['Name', 'Role', 'Team'],
+		rows: [
+		  ['Elena Torres', 'Product Designer', 'Design'],
+		  ['Marcus Chen', 'Frontend Engineer', 'Web'],
+		  ['Sofia Rossi', 'Project Manager', 'Operations']
+		]
+	  };
+
+	  // ----- STORAGE KEY -----
+	  const STORAGE_KEY = 'editableTableData';
+
+	  // ----- STATE -----
+	  let currentHeaders = [...defaultData.headers];
+	  let currentRows = defaultData.rows.map(row => [...row]);
+	  let currentTheme = 'light'; // 'light' or 'dark'
+
+	  // ----- DOM ELEMENTS -----
+	  const table = document.getElementById('editableTable');
+	  const thead = document.getElementById('tableHead');
+	  const tbody = document.getElementById('tableBody');
+	  const emptyMessage = document.getElementById('emptyMessage');
+	  const tableWrapper = document.getElementById('tableWrapper');
+	  const tableBgColorInput = document.getElementById('tableBgColor');
+	  const fontColorInput = document.getElementById('fontColorInput');
+	  
+	  const overlay = document.getElementById('screenshotOverlay');
+	  const overlayTableWrapper = document.getElementById('overlayTableWrapper');
+	  const closeOverlayBtn = document.getElementById('closeOverlayBtn');
+	  const openOverlayBtn = document.getElementById('openOverlayBtn');
+	  const saveScreenshotBtn = document.getElementById('saveScreenshotBtn');
+	  const themeSwitch = document.getElementById('themeSwitch');
+	  const themeBtns = document.querySelectorAll('.theme-btn');
+
+	  // ----- UTILS -----
+	  function updateVisibility() {
+		const hasStructure = currentHeaders.length > 0 || currentRows.length > 0;
+		if (!hasStructure) {
+		  table.style.display = 'none';
+		  emptyMessage.style.display = 'block';
+		} else {
+		  table.style.display = 'table';
+		  emptyMessage.style.display = 'none';
+		}
+	  }
+
+	  function applyTheme(theme) {
+		currentTheme = theme;
+		const root = document.documentElement;
+		
+		// Define theme color schemes
+		const themes = {
+		  light: {
+			bg: '#f6f6f4',
+			surface: '#ffffff',
+			border: '#e2e2de',
+			text: '#1e1e1e',
+			textLight: '#6e6e6e',
+			accent: '#2c2c2c',
+			accentText: '#ffffff',
+			hover: '#eeeeea',
+			tableBg: '#ffffff',
+			headerBg: '#f8f8f6',
+			borderStrong: '#d5d5d0',
+			btnPrimaryBg: '#2c2c2c',
+			btnPrimaryText: '#ffffff',
+			btnSecondaryBg: '#ffffff',
+			btnSecondaryText: '#1e1e1e',
+			btnDangerBg: '#ffffff',
+			btnDangerText: '#4a4a4a',
+			fontColor: '#1e1e1e'
+		  },
+		  dark: {
+			bg: '#1a1a1a',
+			surface: '#252525',
+			border: '#3a3a3a',
+			text: '#eaeaea',
+			textLight: '#a0a0a0',
+			accent: '#e0e0e0',
+			accentText: '#1a1a1a',
+			hover: '#333333',
+			tableBg: '#252525',
+			headerBg: '#2f2f2f',
+			borderStrong: '#4a4a4a',
+			btnPrimaryBg: '#e0e0e0',
+			btnPrimaryText: '#1a1a1a',
+			btnSecondaryBg: '#333333',
+			btnSecondaryText: '#eaeaea',
+			btnDangerBg: '#333333',
+			btnDangerText: '#ff6b6b',
+			fontColor: '#eaeaea'
+		  }
+		};
+
+		const colors = themes[theme];
+
+		// Apply CSS variables
+		root.style.setProperty('--bg', colors.bg);
+		root.style.setProperty('--surface', colors.surface);
+		root.style.setProperty('--border', colors.border);
+		root.style.setProperty('--text', colors.text);
+		root.style.setProperty('--text-light', colors.textLight);
+		root.style.setProperty('--accent', colors.accent);
+		root.style.setProperty('--accent-text', colors.accentText);
+		root.style.setProperty('--hover', colors.hover);
+		root.style.setProperty('--table-bg', colors.tableBg);
+		root.style.setProperty('--header-bg', colors.headerBg);
+		root.style.setProperty('--border-strong', colors.borderStrong);
+		root.style.setProperty('--btn-primary-bg', colors.btnPrimaryBg);
+		root.style.setProperty('--btn-primary-text', colors.btnPrimaryText);
+		root.style.setProperty('--btn-secondary-bg', colors.btnSecondaryBg);
+		root.style.setProperty('--btn-secondary-text', colors.btnSecondaryText);
+		root.style.setProperty('--btn-danger-bg', colors.btnDangerBg);
+		root.style.setProperty('--btn-danger-text', colors.btnDangerText);
+		root.style.setProperty('--font-color', colors.fontColor);
+
+		// Update color input values
+		tableBgColorInput.value = colors.tableBg;
+		fontColorInput.value = colors.fontColor;
+
+		// Update theme buttons active state
+		themeBtns.forEach(btn => {
+		  if (btn.dataset.theme === theme) {
+			btn.classList.add('active');
+		  } else {
+			btn.classList.remove('active');
+		  }
+		});
+
+		// Apply font color to all elements that need it
+		applyFontColor(colors.fontColor);
+		
+		// Save theme to localStorage
+		saveToLocalStorage();
+	  }
+
+	  function applyFontColor(color) {
+		tableWrapper.style.color = color;
+		table.style.color = color;
+		document.querySelectorAll('#editableTable th, #editableTable td').forEach(el => {
+		  el.style.color = color;
+		});
+	  }
+
+	  function setTableBackground(color) {
+		tableWrapper.style.backgroundColor = color;
+		table.style.backgroundColor = color;
+		if (overlayTableWrapper) {
+		  overlayTableWrapper.style.backgroundColor = color;
+		}
+		saveToLocalStorage();
+	  }
+
+	  function setFontColor(color) {
+		applyFontColor(color);
+		saveToLocalStorage();
+	  }
+
+	  // ----- LOCAL STORAGE -----
+	  function saveToLocalStorage() {
+		try {
+		  const data = {
+			headers: currentHeaders,
+			rows: currentRows,
+			theme: currentTheme,
+			tableBg: tableBgColorInput.value,
+			fontColor: fontColorInput.value
+		  };
+		  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+		} catch (e) {
+		  console.warn('Could not save to localStorage:', e);
+		}
+	  }
+
+	  function loadFromLocalStorage() {
+		try {
+		  const saved = localStorage.getItem(STORAGE_KEY);
+		  if (saved) {
+			const data = JSON.parse(saved);
+			if (data.headers && Array.isArray(data.headers)) {
+			  currentHeaders = data.headers;
+			}
+			if (data.rows && Array.isArray(data.rows)) {
+			  currentRows = data.rows;
+			}
+			if (data.theme === 'light' || data.theme === 'dark') {
+			  currentTheme = data.theme;
+			}
+			if (data.tableBg) {
+			  tableBgColorInput.value = data.tableBg;
+			}
+			if (data.fontColor) {
+			  fontColorInput.value = data.fontColor;
+			}
+			return true;
+		  }
+		} catch (e) {
+		  console.warn('Could not load from localStorage:', e);
+		}
+		return false;
+	  }
+
+	  // ----- RENDER MAIN TABLE -----
+	  function renderTable() {
+		thead.innerHTML = '';
+		tbody.innerHTML = '';
+
+		const headerRow = document.createElement('tr');
+		const cornerTh = document.createElement('th');
+		cornerTh.textContent = '';
+		cornerTh.className = 'corner-cell';
+		cornerTh.setAttribute('contenteditable', 'false');
+		headerRow.appendChild(cornerTh);
+
+		if (currentHeaders.length > 0) {
+		  currentHeaders.forEach((headerText, colIndex) => {
+			const th = document.createElement('th');
+			th.textContent = headerText;
+			th.setAttribute('contenteditable', 'true');
+			th.dataset.columnIndex = colIndex;
+			th.dataset.role = 'header';
+			th.addEventListener('input', handleHeaderEdit);
+			th.addEventListener('blur', saveToLocalStorage);
+			headerRow.appendChild(th);
+		  });
+		} else {
+		  const emptyHeader = document.createElement('th');
+		  emptyHeader.textContent = '';
+		  emptyHeader.setAttribute('contenteditable', 'false');
+		  headerRow.appendChild(emptyHeader);
+		}
+		thead.appendChild(headerRow);
+
+		if (currentRows.length > 0) {
+		  currentRows.forEach((rowData, rowIndex) => {
+			const tr = document.createElement('tr');
+			const rowIndexCell = document.createElement('td');
+			rowIndexCell.textContent = rowIndex + 1;
+			rowIndexCell.className = 'row-index';
+			rowIndexCell.setAttribute('contenteditable', 'false');
+			tr.appendChild(rowIndexCell);
+
+			const cellCount = Math.max(currentHeaders.length, rowData.length, 1);
+			for (let col = 0; col < cellCount; col++) {
+			  const td = document.createElement('td');
+			  const cellValue = rowData[col] !== undefined ? rowData[col] : '';
+			  td.textContent = cellValue;
+			  td.setAttribute('contenteditable', 'true');
+			  td.dataset.rowIndex = rowIndex;
+			  td.dataset.columnIndex = col;
+			  td.dataset.role = 'cell';
+			  td.addEventListener('input', handleCellEdit);
+			  td.addEventListener('blur', saveToLocalStorage);
+			  tr.appendChild(td);
+			}
+			tbody.appendChild(tr);
+		  });
+		}
+		updateVisibility();
+		// Re-apply font color to new elements
+		applyFontColor(fontColorInput.value);
+	  }
+
+	  // ----- EDIT HANDLERS -----
+	  function handleHeaderEdit(e) {
+		const th = e.target;
+		const colIndex = parseInt(th.dataset.columnIndex, 10);
+		if (!isNaN(colIndex) && colIndex >= 0 && colIndex < currentHeaders.length) {
+		  currentHeaders[colIndex] = th.textContent;
+		  saveToLocalStorage();
+		}
+	  }
+
+	  function handleCellEdit(e) {
+		const td = e.target;
+		const rowIndex = parseInt(td.dataset.rowIndex, 10);
+		const colIndex = parseInt(td.dataset.columnIndex, 10);
+		if (!isNaN(rowIndex) && !isNaN(colIndex) && rowIndex >= 0 && rowIndex < currentRows.length) {
+		  if (colIndex >= currentRows[rowIndex].length) {
+			currentRows[rowIndex][colIndex] = td.textContent;
+		  } else {
+			currentRows[rowIndex][colIndex] = td.textContent;
+		  }
+		  saveToLocalStorage();
+		}
+	  }
+
+	  // ----- CRUD -----
+	  function addRow() {
+		const cols = Math.max(currentHeaders.length, 1);
+		const newRow = new Array(cols).fill('');
+		currentRows.push(newRow);
+		renderTable();
+		saveToLocalStorage();
+	  }
+
+	  function addColumn() {
+		const newHeader = `Column ${currentHeaders.length + 1}`;
+		currentHeaders.push(newHeader);
+		currentRows.forEach(row => row.push(''));
+		renderTable();
+		saveToLocalStorage();
+	  }
+
+	  function deleteLastRow() {
+		if (currentRows.length > 0) {
+		  currentRows.pop();
+		  renderTable();
+		  saveToLocalStorage();
+		}
+	  }
+
+	  function deleteLastColumn() {
+		if (currentHeaders.length > 0) {
+		  currentHeaders.pop();
+		  currentRows.forEach(row => row.pop());
+		  renderTable();
+		  saveToLocalStorage();
+		}
+	  }
+
+	  function resetToDefault() {
+		currentHeaders = [...defaultData.headers];
+		currentRows = defaultData.rows.map(row => [...row]);
+		applyTheme('light');
+		tableBgColorInput.value = '#ffffff';
+		fontColorInput.value = '#1e1e1e';
+		renderTable();
+		saveToLocalStorage();
+	  }
+
+	  // ----- COLOR HANDLERS -----
+	  function handleBgColorChange(e) {
+		setTableBackground(e.target.value);
+	  }
+
+	  function handleFontColorChange(e) {
+		setFontColor(e.target.value);
+	  }
+
+	  // ----- OVERLAY & SCREENSHOT -----
+	  function buildOverlayTable() {
+		const overlayTable = document.createElement('table');
+		overlayTable.style.width = '100%';
+		overlayTable.style.borderCollapse = 'collapse';
+		overlayTable.style.minWidth = '600px';
+		overlayTable.style.fontSize = '0.85rem';
+		overlayTable.style.color = fontColorInput.value;
+		
+		const headerRow = document.createElement('tr');
+		const cornerTh = document.createElement('th');
+		cornerTh.textContent = '';
+		cornerTh.style.background = 'var(--header-bg)';
+		cornerTh.style.width = '36px';
+		cornerTh.style.borderBottom = '1px solid var(--border-strong)';
+		headerRow.appendChild(cornerTh);
+		
+		currentHeaders.forEach(headerText => {
+		  const th = document.createElement('th');
+		  th.textContent = headerText;
+		  th.style.background = 'var(--header-bg)';
+		  th.style.fontWeight = '600';
+		  th.style.padding = '10px 12px';
+		  th.style.textAlign = 'left';
+		  th.style.borderBottom = '1px solid var(--border-strong)';
+		  th.style.fontSize = '0.8rem';
+		  th.style.color = fontColorInput.value;
+		  headerRow.appendChild(th);
+		});
+		overlayTable.appendChild(headerRow);
+		
+		currentRows.forEach((rowData, rowIndex) => {
+		  const tr = document.createElement('tr');
+		  const rowIndexCell = document.createElement('td');
+		  rowIndexCell.textContent = rowIndex + 1;
+		  rowIndexCell.style.background = 'var(--header-bg)';
+		  rowIndexCell.style.color = 'var(--text-light)';
+		  rowIndexCell.style.textAlign = 'center';
+		  rowIndexCell.style.padding = '10px 12px';
+		  rowIndexCell.style.borderBottom = '1px solid var(--border)';
+		  rowIndexCell.style.fontSize = '0.75rem';
+		  tr.appendChild(rowIndexCell);
+		  
+		  const cellCount = Math.max(currentHeaders.length, rowData.length, 1);
+		  for (let col = 0; col < cellCount; col++) {
+			const td = document.createElement('td');
+			td.textContent = rowData[col] !== undefined ? rowData[col] : '';
+			td.style.padding = '10px 12px';
+			td.style.borderBottom = '1px solid var(--border)';
+			td.style.color = fontColorInput.value;
+			tr.appendChild(td);
+		  }
+		  overlayTable.appendChild(tr);
+		});
+		
+		return overlayTable;
+	  }
+
+	  function openOverlay() {
+		overlayTableWrapper.innerHTML = '';
+		const cloneTable = buildOverlayTable();
+		overlayTableWrapper.appendChild(cloneTable);
+		overlayTableWrapper.style.backgroundColor = tableBgColorInput.value;
+		overlay.classList.add('active');
+	  }
+
+	  function closeOverlay() {
+		overlay.classList.remove('active');
+	  }
+
+	  async function saveTableAsImage() {
+		if (!overlayTableWrapper.firstChild) return;
+		try {
+		  const canvas = await html2canvas(overlayTableWrapper, {
+			scale: 2,
+			backgroundColor: tableBgColorInput.value || '#ffffff',
+			allowTaint: false,
+			useCORS: true,
+			logging: false,
+		  });
+		  const link = document.createElement('a');
+		  link.download = `table_${new Date().toISOString().slice(0,19).replace(/:/g, '-')}.png`;
+		  link.href = canvas.toDataURL('image/png');
+		  link.click();
+		} catch (error) {
+		  console.error('Screenshot failed:', error);
+		  alert('Could not save image. Please try again.');
+		}
+	  }
+
+	  // ----- INIT -----
+	  function init() {
+		// Load saved data first
+		const hasSavedData = loadFromLocalStorage();
+		
+		// Apply theme (from saved or default)
+		applyTheme(currentTheme);
+		
+		// Apply colors from saved or defaults
+		setTableBackground(tableBgColorInput.value);
+		setFontColor(fontColorInput.value);
+		
+		renderTable();
+
+		document.getElementById('addRowBtn').addEventListener('click', addRow);
+		document.getElementById('addColumnBtn').addEventListener('click', addColumn);
+		document.getElementById('deleteRowBtn').addEventListener('click', deleteLastRow);
+		document.getElementById('deleteColumnBtn').addEventListener('click', deleteLastColumn);
+		document.getElementById('resetTableBtn').addEventListener('click', resetToDefault);
+		tableBgColorInput.addEventListener('input', handleBgColorChange);
+		fontColorInput.addEventListener('input', handleFontColorChange);
+		
+		openOverlayBtn.addEventListener('click', openOverlay);
+		closeOverlayBtn.addEventListener('click', closeOverlay);
+		saveScreenshotBtn.addEventListener('click', saveTableAsImage);
+		
+		overlay.addEventListener('click', function(e) {
+		  if (e.target === overlay) {
+			closeOverlay();
+		  }
+		});
+
+		// Theme switch
+		themeBtns.forEach(btn => {
+		  btn.addEventListener('click', function() {
+			const theme = this.dataset.theme;
+			applyTheme(theme);
+		  });
+		});
+
+		// Save on page unload
+		window.addEventListener('beforeunload', saveToLocalStorage);
+	  }
+
+	  init();
+	})();
+  </script>
+</body>
+</html>
